@@ -17,9 +17,11 @@
 #include "stm32f10x_lib.h"
 #include "stm32f10x_dbgmcu.h"
 
+#include "string.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define maxBufLen 10
+#define maxBufLen 100//10
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -27,8 +29,9 @@ ErrorStatus HSEStartUpStatus;
 u8 rxFrameOK;
 u8 delay100ms;
 u8 RXBUF[maxBufLen];
+
 u8 TXBUF[maxBufLen];
-u8 TXBUF_test[2]={0x03,0x04};
+u8 TXBUF_test[4]={0xFB,0x03,0x00,0xAA};//test get mac
 
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
@@ -40,6 +43,7 @@ void NVIC_Configuration(void);
 u32 ADC_Check(void);
 void Init_Iwdg(void);
 void UART_Send(u8 *str,u8 len3);//串口1
+void substring(char *s, char ch1, char ch2, char *substr);//提取MAC字符串
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -68,13 +72,15 @@ int main(void)
   // Enable SysTick interrupt
   SysTick_ITConfig(ENABLE);
   // Enable the SysTick Counter
-  SysTick_CounterCmd(SysTick_Counter_Enable);
+  SysTick_CounterCmd(SysTick_Counter_Enable); 
    
+   UART_Send(TXBUF_test,4);//串口1 
 	while(1)
-	{
+	{       
 		// 处理数据
 		if(rxFrameOK)
 		{
+                       //UART_Send(TXBUF_test,4);
 			if((RXBUF[1]=='z')||(RXBUF[1]=='Z'))
 				if((RXBUF[2]=='m')||(RXBUF[2]=='M'))
 					if((RXBUF[3]=='k')||(RXBUF[3]=='K'))
@@ -94,6 +100,12 @@ int main(void)
 //                                                        UART_Send(TXBUF_test,2);//串口1
 							USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 						}
+                       if((RXBUF[1]=='L')||(RXBUF[2]=='o'))
+                       {
+                         char RXBUF_MAC[20];
+                         substring((char*)RXBUF, ':','\0',RXBUF_MAC);
+                         UART_Send((u8*)RXBUF_MAC,(u8)strlen(RXBUF_MAC));// 
+                       }
 			RXBUF[0] = 0;
 			rxFrameOK = 0;
                       //  GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_12);
@@ -119,6 +131,39 @@ void UART_Send(u8 *str,u8 len3)
 	   while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);  //while?a??ê±??μèμ?oü??êy?Y?1??·￠3?è￥  ò??-ê???ò????D??á?
 	}
 }
+/*
+ * 函数名：
+ * 描述:
+ * 输入：
+ * 输出：	
+ */
+//void get_mac(u8 *str,u8 len3)
+//{
+//        while(p!='\0')  
+//	{
+//          if((*(p+post_len)=='s')&&(*(p+post_len+1)=='s')&&(*(p+post_len+2)==':'))
+//	 {
+//		 post_len=post_len+17;
+//		 break; 
+//	 } 	 		 
+//	 post_len++; 
+//	}
+//    memcpy (vb->value, &msg, msglen);   
+//}
+		
+/*
+ * 函数名：void substring( char *s, char ch1, char ch2, char *substr )
+ * 描述:找两个字之间的字符串
+ * 输入：
+ * 输出：	
+ */
+void substring(char *s, char ch1, char ch2, char *substr)
+{
+    while( *s && *s++!=ch1 ) ;
+    while( *s && *s!=ch2 ) *substr++=*s++ ;
+    *substr='\0';
+}
+
 
 
 /*u32 ADC_Check(void)
