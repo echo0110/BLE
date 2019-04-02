@@ -135,6 +135,12 @@ int main(void)
                        }
 			RXBUF[0] = 0;
 			rxFrameOK = 0;
+                        
+                        delay100ms = 0;
+			while(delay100ms<=5)IWDG_ReloadCounter();
+                        GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);
+		       // delay100ms = 0;
+			//while(delay100ms<=2)IWDG_ReloadCounter();
 
 		}
 		
