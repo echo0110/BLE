@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=899208815
+Checksum=610769408
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -87,9 +87,7 @@ ShowSource=1
 [Disassemble mode]
 mode=1
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.c}.86.8" 0 0 1 "" 0 "" 0
-Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.c}.81.4" 0 0 1 "" 0 "" 0
-Count=2
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -99,10 +97,11 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [Aliases]
 A0=_ "C:\Users\aaron.xu\Desktop\智能机柜\蓝牙门禁\code\main.c" ""
-A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
-A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
-A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
-Count=4
+A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_gpio.c" ""
+A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
+A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
+A4=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
+Count=5
 SuppressDialog=0
 [DriverProfiling]
 Enabled=0

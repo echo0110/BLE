@@ -1,18 +1,18 @@
-"C:\Users\Administrator\Desktop\ble\code\main.c"
+"C:\Users\Administrator\Desktop\ble2\code\main.c"
 -std=c99
 -ferror-limit=100
 -I
-C:\Users\Administrator\Desktop\ble\code\STM32F10xFWLib\inc
+C:\Users\Administrator\Desktop\ble2\code\STM32F10xFWLib\inc
 -I
-C:\Users\Administrator\Desktop\ble\code
+C:\Users\Administrator\Desktop\ble2\code
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\arm\inc\c
 -I
-C:\Users\Administrator\Desktop\ble\code\STM32F10xFWLib\inc
+C:\Users\Administrator\Desktop\ble2\code\STM32F10xFWLib\inc
 -I
-C:\Users\Administrator\Desktop\ble\code
+C:\Users\Administrator\Desktop\ble2\code
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0

@@ -30,8 +30,26 @@ u8 rxFrameOK;
 u8 delay100ms;
 u8 RXBUF[maxBufLen];
 
+char RXBUF_MAC[20];
+//char *RXBUF_P;
+
 u8 TXBUF[maxBufLen];
 u8 TXBUF_test[4]={0xFB,0x03,0x00,0xAA};//test get mac
+
+//u8 advertist_test[7]={0xFA,0x07,0x03,0x01,0x02,0x03,0xAA};//设置广播报文中的 厂家数据
+
+u8 advertist_test[7]={0xFA,0x06,0x03,0x31,0x32,0x33,0xAA};//设置广播报文中的 厂家数据
+
+
+u8 reboot[4]={0xFA,0x08,0x00,0xAA};
+
+//u8 set_name_test[7]={0xFA,0x06,0x03,0x31,0x32,0x33,0xAA};//设置广播报文中的 厂家数据
+
+u8 local_name[7]={0xFA,0x06,0x03,0x36,0x36,0x36,0xAA};
+
+//u8 set_name_test[16]={0};//设置广播报文中的 厂家数据
+
+//u8 set_test[10]={0xFA,0x06,0x06,0x31,0x32,0x33,0x34,0x35,0x36,0xAA};
 
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
@@ -67,52 +85,33 @@ int main(void)
   TIM_Configuration();
   NVIC_Configuration();
   Init_Iwdg();
+
   // SysTick end of count event each 1ms with input clock equal to 9MHz (HCLK/8, default)
   SysTick_SetReload(9000);
   // Enable SysTick interrupt
   SysTick_ITConfig(ENABLE);
   // Enable the SysTick Counter
   SysTick_CounterCmd(SysTick_Counter_Enable); 
-   
-   UART_Send(TXBUF_test,4);//串口1 
+  
+
+  
+  UART_Send(local_name,7);//send command 0f set local name
+  delay100ms = 0;
+  while(delay100ms<=2)IWDG_ReloadCounter();
+  UART_Send(reboot,4);
 	while(1)
 	{       
 		// 处理数据
 		if(rxFrameOK)
-		{
-                       //UART_Send(TXBUF_test,4);
-			if((RXBUF[1]=='z')||(RXBUF[1]=='Z'))
-				if((RXBUF[2]=='m')||(RXBUF[2]=='M'))
-					if((RXBUF[3]=='k')||(RXBUF[3]=='K'))
-						if((RXBUF[4]=='m')||(RXBUF[4]=='M'))
-						{
-							GPIO_SetBits((GPIO_TypeDef *)GPIOB_BASE, GPIO_Pin_7);
-							delay100ms = 0;
-							while(delay100ms<=2)IWDG_ReloadCounter();
-							GPIO_ResetBits((GPIO_TypeDef *)GPIOB_BASE, GPIO_Pin_7);
-							delay100ms = 0;
-							while(delay100ms<=5)IWDG_ReloadCounter();
-							
-							TXBUF[0] = 2;
-							TXBUF[1] = 0x01;//'k';
-							TXBUF[2] = 0x02;//'o';
-//                                                        GPIO_ResetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_12);
-//                                                        UART_Send(TXBUF_test,2);//串口1
-							USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
-						}
-                       if((RXBUF[1]=='L')||(RXBUF[2]=='o'))
-                       {
-                         char RXBUF_MAC[20];
-                         substring((char*)RXBUF, ':','\0',RXBUF_MAC);
-                         UART_Send((u8*)RXBUF_MAC,(u8)strlen(RXBUF_MAC));// 
-                       }
-			RXBUF[0] = 0;
+		{                                       
+			//RXBUF[0] = 0;
 			rxFrameOK = 0;
+                       //send command 0f set local name
                       //  GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_12);
-		}
-		
+		}		
 		// 喂狗
 		IWDG_ReloadCounter();
+                
 	}
 }
 
@@ -131,6 +130,9 @@ void UART_Send(u8 *str,u8 len3)
 	   while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);  //while?a??ê±??μèμ?oü??êy?Y?1??·￠3?è￥  ò??-ê???ò????D??á?
 	}
 }
+
+			
+
 /*
  * 函数名：
  * 描述:
@@ -274,6 +276,12 @@ void GPIO_Configuration(void)
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
+  
+  
+  /* PA8 CMD 配置命令模式切换输出 */
+//  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+//  GPIO_Init(GPIOA, &GPIO_InitStructure);
   
   /* PA5电池电量检测ADC12_IN5 */  
 //  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
