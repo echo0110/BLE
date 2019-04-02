@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=899208815
+Checksum=2081432189
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -47,18 +47,6 @@ CStepIntDis=_ 0
 TraceBufferSize=0x00010000
 TraceStallIfFIFOFull=0x00000000
 TracePortSize=0x00000000
-[DataLog]
-LogEnabled=0
-SumEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
-[InterruptLog]
-LogEnabled=0
-SumEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-ShowTimeSum=1
-SumSortOrder=0
 [TraceHelperExtra]
 Enabled=0
 ShowSource=1
@@ -81,15 +69,33 @@ StopOnThrow=_ 0
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[InterruptLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+SumSortOrder=0
+[DataLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
+[Interrupts]
+Enabled=1
+[MemConfig]
+Base=1
+Manual=0
+Ddf=1
+TypeViol=0
+Stop=1
+[Simulator]
+Freq=10000000
+MultiCoreRunAll=1
 [Trace1]
 Enabled=0
 ShowSource=1
-[Disassemble mode]
-mode=1
-[Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.c}.86.8" 0 0 1 "" 0 "" 0
-Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.c}.81.4" 0 0 1 "" 0 "" 0
-Count=2
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -97,13 +103,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Aliases]
-A0=_ "C:\Users\aaron.xu\Desktop\智能机柜\蓝牙门禁\code\main.c" ""
-A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
-A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
-A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
-Count=4
-SuppressDialog=0
 [DriverProfiling]
 Enabled=0
 Mode=1
@@ -114,3 +113,15 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[Disassemble mode]
+mode=1
+[Breakpoints2]
+Count=0
+[Aliases]
+A0=_ "C:\Users\aaron.xu\Desktop\智能机柜\蓝牙门禁\code\main.c" ""
+A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_gpio.c" ""
+A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
+A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
+A4=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
+Count=5
+SuppressDialog=0

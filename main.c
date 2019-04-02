@@ -30,8 +30,20 @@ u8 rxFrameOK;
 u8 delay100ms;
 u8 RXBUF[maxBufLen];
 
+char RXBUF_MAC[20];
+char *RXBUF_P;
+
 u8 TXBUF[maxBufLen];
 u8 TXBUF_test[4]={0xFB,0x03,0x00,0xAA};//test get mac
+
+u8 reboot[4]={0xFA,0x08,0x00,0xAA};
+
+u8 advertist_test[7]={0xFA,0x06,0x03,0x31,0x32,0x33,0xAA};//设置广播报文中的 厂家数据
+
+u8 local_name[7]={0xFA,0x06,0x03,0x34,0x37,0x32,0xAA};
+
+u8 set_name_test[16]={0};//设置广播报文中的 厂家数据
+
 
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
@@ -73,8 +85,21 @@ int main(void)
   SysTick_ITConfig(ENABLE);
   // Enable the SysTick Counter
   SysTick_CounterCmd(SysTick_Counter_Enable); 
+  
+  
+  set_name_test[0]=0xFA;
+  set_name_test[1]=0x06;
+  set_name_test[2]=0x0C;
+  set_name_test[15]=0xAA; 
+  //UART_Send(TXBUF_test,4);//send command of get mac
+
+ // UART_Send(local_name,7);//send command 0f set local name
    
-   UART_Send(TXBUF_test,4);//串口1 
+ // while(!rxFrameOK);
+ // rxFrameOK=0;
+  UART_Send(reboot,4);//reboot ble 
+  
+    //GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//拉低CMD 配置成配置模式
 	while(1)
 	{       
 		// 处理数据
@@ -102,13 +127,39 @@ int main(void)
 						}
                        if((RXBUF[1]=='L')||(RXBUF[2]=='o'))
                        {
-                         char RXBUF_MAC[20];
-                         substring((char*)RXBUF, ':','\0',RXBUF_MAC);
-                         UART_Send((u8*)RXBUF_MAC,(u8)strlen(RXBUF_MAC));// 
+                        static int i=0;
+                        rxFrameOK = 0;
+                        RXBUF_P=strchr((char*)RXBUF,':');
+                        for(i=0;i<12;i++)
+                        {
+                         set_name_test[3+i]=RXBUF_P[i+1];                   
+                        }
+                        UART_Send(advertist_test,7);
+                        //UART_Send(set_name_test,16);//send command 0f set local name
+                        for(i=0;i<500;i++)
+                        {
+                        
+                        
+                        }
+                        while(!rxFrameOK);
+                       // rxFrameOK=0;
+                      
+                        UART_Send(reboot,4);//reboot ble 
+//                        GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//
+//                        while(delay100ms<=2){};
+//                        GPIO_ResetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//
+//                      // UART_Send(set_name_test,16);//send command 0f set local name
+//                         UART_Send(set_test,10);
+                    
+//                        TXBUF[0] = 2;
+//			TXBUF[1] = 0x05;//'k';
+//			TXBUF[2] = 0x06;//'o';
+//                        UART_Send((u8*)TXBUF,2);// 
                        }
 			RXBUF[0] = 0;
 			rxFrameOK = 0;
-                      //  GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_12);
+                       // UART_Send(reboot,4);//reboot ble 
+                       // GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//set penetrate
 		}
 		
 		// 喂狗
@@ -131,25 +182,7 @@ void UART_Send(u8 *str,u8 len3)
 	   while(USART_GetFlagStatus(USART1,USART_FLAG_TC)==RESET);  //while?a??ê±??μèμ?oü??êy?Y?1??·￠3?è￥  ò??-ê???ò????D??á?
 	}
 }
-/*
- * 函数名：
- * 描述:
- * 输入：
- * 输出：	
- */
-//void get_mac(u8 *str,u8 len3)
-//{
-//        while(p!='\0')  
-//	{
-//          if((*(p+post_len)=='s')&&(*(p+post_len+1)=='s')&&(*(p+post_len+2)==':'))
-//	 {
-//		 post_len=post_len+17;
-//		 break; 
-//	 } 	 		 
-//	 post_len++; 
-//	}
-//    memcpy (vb->value, &msg, msglen);   
-//}
+
 		
 /*
  * 函数名：void substring( char *s, char ch1, char ch2, char *substr )
@@ -274,6 +307,12 @@ void GPIO_Configuration(void)
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
+  
+  
+  /* PA8 CMD 配置命令模式切换输出 */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  GPIO_Init(GPIOA, &GPIO_InitStructure);
   
   /* PA5电池电量检测ADC12_IN5 */  
 //  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
