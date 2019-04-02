@@ -1,5 +1,5 @@
 [DebugChecksum]
-Checksum=2081432189
+Checksum=1155542123
 [DisAssemblyWindow]
 NumStates=_ 1
 State 1=_ 1
@@ -96,6 +96,10 @@ MultiCoreRunAll=1
 [Trace1]
 Enabled=0
 ShowSource=1
+[Disassemble mode]
+mode=1
+[Breakpoints2]
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -103,6 +107,14 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "C:\Users\aaron.xu\Desktop\智能机柜\蓝牙门禁\code\main.c" ""
+A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_gpio.c" ""
+A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
+A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
+A4=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
+Count=5
+SuppressDialog=0
 [DriverProfiling]
 Enabled=0
 Mode=1
@@ -113,15 +125,3 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
-[Disassemble mode]
-mode=1
-[Breakpoints2]
-Count=0
-[Aliases]
-A0=_ "C:\Users\aaron.xu\Desktop\智能机柜\蓝牙门禁\code\main.c" ""
-A1=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_gpio.c" ""
-A2=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_iwdg.c" ""
-A3=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_systick.c" ""
-A4=_ "C:\Users\aaron.xu\Desktop\资料\prj\code\STM32F10xFWLib\src\stm32f10x_usart.c" ""
-Count=5
-SuppressDialog=0

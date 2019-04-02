@@ -91,15 +91,9 @@ int main(void)
   set_name_test[1]=0x06;
   set_name_test[2]=0x0C;
   set_name_test[15]=0xAA; 
-  //UART_Send(TXBUF_test,4);//send command of get mac
-
- // UART_Send(local_name,7);//send command 0f set local name
-   
- // while(!rxFrameOK);
- // rxFrameOK=0;
-  UART_Send(reboot,4);//reboot ble 
+  UART_Send(TXBUF_test,4);//send command of get mac
+  while(delay100ms<=2)IWDG_ReloadCounter();
   
-    //GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//拉低CMD 配置成配置模式
 	while(1)
 	{       
 		// 处理数据
@@ -134,32 +128,14 @@ int main(void)
                         {
                          set_name_test[3+i]=RXBUF_P[i+1];                   
                         }
-                        UART_Send(advertist_test,7);
-                        //UART_Send(set_name_test,16);//send command 0f set local name
-                        for(i=0;i<500;i++)
-                        {
-                        
-                        
-                        }
-                        while(!rxFrameOK);
-                       // rxFrameOK=0;
+                        UART_Send(set_name_test,16);//send command 0f set local name
+                        while(delay100ms<=5)IWDG_ReloadCounter();
                       
                         UART_Send(reboot,4);//reboot ble 
-//                        GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//
-//                        while(delay100ms<=2){};
-//                        GPIO_ResetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//
-//                      // UART_Send(set_name_test,16);//send command 0f set local name
-//                         UART_Send(set_test,10);
-                    
-//                        TXBUF[0] = 2;
-//			TXBUF[1] = 0x05;//'k';
-//			TXBUF[2] = 0x06;//'o';
-//                        UART_Send((u8*)TXBUF,2);// 
                        }
 			RXBUF[0] = 0;
 			rxFrameOK = 0;
-                       // UART_Send(reboot,4);//reboot ble 
-                       // GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);//set penetrate
+
 		}
 		
 		// 喂狗
