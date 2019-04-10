@@ -36,6 +36,8 @@ char *RXBUF_P;
 u8 TXBUF[maxBufLen];
 u8 TXBUF_test[4]={0xFB,0x03,0x00,0xAA};//test get mac
 
+u8 get_ble_name[4]={0xFB,0x06,0x00,0xAA};//test get ble name
+
 u8 reboot[4]={0xFA,0x08,0x00,0xAA};
 
 u8 advertist_test[7]={0xFA,0x06,0x03,0x31,0x32,0x33,0xAA};//ÉèÖÃ¹ã²¥±¨ÎÄÖĞµÄ ³§¼ÒÊı¾İ
@@ -43,6 +45,8 @@ u8 advertist_test[7]={0xFA,0x06,0x03,0x31,0x32,0x33,0xAA};//ÉèÖÃ¹ã²¥±¨ÎÄÖĞµÄ ³§¼
 u8 local_name[7]={0xFA,0x06,0x03,0x34,0x37,0x32,0xAA};
 
 u8 set_name_test[16]={0};//ÉèÖÃ¹ã²¥±¨ÎÄÖĞµÄ ³§¼ÒÊı¾İ
+
+u8 lenth;
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,8 +95,26 @@ int main(void)
   set_name_test[1]=0x06;
   set_name_test[2]=0x0C;
   set_name_test[15]=0xAA; 
-  UART_Send(TXBUF_test,4);//send command of get mac
-  while(delay100ms<=2)IWDG_ReloadCounter();
+  
+  UART_Send(get_ble_name,4);//send command of get ble name
+  
+  while(delay100ms<=5)IWDG_ReloadCounter();
+  
+  lenth=strlen((char*)RXBUF);
+  if(strlen((char*)RXBUF)!=0x0f)  //
+  {
+   memset(RXBUF,0,100);
+   UART_Send(TXBUF_test,4);//send command of get mac
+   while(delay100ms<=2)IWDG_ReloadCounter();  
+  }
+  if(strlen((char*)RXBUF)==0x0f)
+  {
+   memset(RXBUF,0,100);
+   GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);  
+  }
+   
+  
+  
   
 	while(1)
 	{       
@@ -131,17 +153,18 @@ int main(void)
                         UART_Send(set_name_test,16);//send command 0f set local name
                         while(delay100ms<=5)IWDG_ReloadCounter();
                       
-                        UART_Send(reboot,4);//reboot ble 
-                       }
-			RXBUF[0] = 0;
-			rxFrameOK = 0;
+                        UART_Send(reboot,4);//reboot ble
+                        
                         
                         delay100ms = 0;
 			while(delay100ms<=5)IWDG_ReloadCounter();
                         GPIO_SetBits((GPIO_TypeDef *)GPIOA_BASE, GPIO_Pin_8);
-		       // delay100ms = 0;
-			//while(delay100ms<=2)IWDG_ReloadCounter();
-
+                       }
+			RXBUF[0] = 0;
+			rxFrameOK = 0;
+                        memset(RXBUF,0,100);
+                        
+                        
 		}
 		
 		// Î¹¹·
